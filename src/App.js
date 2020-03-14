@@ -3,19 +3,22 @@ import "./App.css";
 import CharacterCard from "./components/CharacterCard";
 import Button from "./components/Button";
 
+const initialState = {
+  currentHealth: 100,
+  maxHealth: 100,
+  rolls: []
+};
+
 function App() {
-  const [heroStats, setHeroStats] = useState({
-    currentHealth: 100,
-    maxHealth: 100,
-    rolls: []
-  });
-  const [monsterStats, setMonsterStats] = useState({
-    currentHealth: 100,
-    maxHealth: 100,
-    rolls: []
-  });
+  const [heroStats, setHeroStats] = useState({ ...initialState });
+  const [monsterStats, setMonsterStats] = useState({ ...initialState });
   const DiceCasting = () => {
-    return Math.floor(Math.random() * 6) + 1;
+    return Math.floor(Math.random() * 30) + 1;
+  };
+
+  const onReset = () => {
+    setHeroStats({ ...initialState });
+    setMonsterStats({ ...initialState });
   };
 
   const attackHandler = () => {
@@ -44,12 +47,17 @@ function App() {
         });
   };
 
+  const gameEnded =
+    heroStats.currentHealth <= 0 || monsterStats.currentHealth <= 0;
+
   return (
     <div className="App">
       <header className="App-header">
         <CharacterCard name="Hero" stats={heroStats} />
         <CharacterCard name="Monster" stats={monsterStats} />
-        <Button onClick={attackHandler}>Attack</Button>
+        <Button onClick={gameEnded ? onReset : attackHandler}>
+          {gameEnded ? "Reset" : "Attack"}
+        </Button>
       </header>
     </div>
   );
