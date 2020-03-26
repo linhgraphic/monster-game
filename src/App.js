@@ -51,14 +51,17 @@ function App() {
     heroStats.currentHealth <= 0 || monsterStats.currentHealth <= 0;
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <CharacterCard name="Hero" stats={heroStats} />
-        <CharacterCard name="Monster" stats={monsterStats} />
+    <div className="app">
+      <CharacterCard name="Hero" stats={heroStats} />
+      <div className="container">
         <Button onClick={gameEnded ? onReset : attackHandler}>
           {gameEnded ? "Reset" : "Attack"}
         </Button>
-      </header>
+        {gameEnded && (
+          <h1>{heroStats.currentHealth <= 0 ? "Game Over" : "You win"}</h1>
+        )}
+      </div>
+      <CharacterCard name="Monster" stats={monsterStats} />
     </div>
   );
 }
